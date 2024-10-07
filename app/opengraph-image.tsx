@@ -26,7 +26,7 @@ export default async function Image() {
           fontWeight: 'bold',
         }}
       >
-        Books
+        Book Summaries
       </div>
     ),
     {
