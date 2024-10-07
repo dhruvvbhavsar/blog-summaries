@@ -1,13 +1,13 @@
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
 
-export default function Page({
+export default function BookPage({
   params,
 }: {
   params: { id: string; slug: string };
 }) {
   const BookComponent = dynamic(
-    () => import(`@/books/${params.id}/${params.slug}`),
+    () => import(`@/public/books/${params.id}/${params.slug}`),
     {
       loading: () => <p>Loading book...</p>,
     }

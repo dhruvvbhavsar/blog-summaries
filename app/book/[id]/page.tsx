@@ -1,36 +1,44 @@
-import { readdirSync } from "fs";
-import { notFound } from "next/navigation";
+import fs from 'fs/promises';
+import path from 'path';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
 
-export default function Chapters({ params }: { params: { id: string } }) {
-  if (!params.id) {
-    return notFound();
-  }
-
-  //read the name of the folders in @/books
-  let chapters;
+async function getChapters(bookId: string) {
+  const bookDirectory = path.join(process.cwd(), 'public', 'books', bookId);
   try {
-    chapters = readdirSync(`./books/${params.id}`);
-  } catch (e) {
-    console.error(e);
-    return notFound();
+    const chapters = await fs.readdir(bookDirectory);
+    return chapters.sort((a, b) => {
+      const num = (str: string) => parseInt(str.split("-")[1]);
+      return num(a) - num(b);
+    });
+  } catch (error) {
+    console.error('Error reading chapters directory:', error);
+    return null;
   }
+}
+
+export default async function ChaptersPage({ params }: { params: { id: string } }) {
+  if (!params.id) {
+    notFound();
+  }
+
+  const chapters = await getChapters(params.id);
+
+  if (!chapters) {
+    notFound();
+  }
+
   return (
     <>
       <h1>{params.id}</h1>
       <ul>
-        {chapters
-          .sort((a, b) => {
-            const num = (str: string) => parseInt(str.split("-")[1]);
-
-            return num(a) - num(b);
-          })
-          .map((chapter) => (
-            <li key={chapter}>
-              <a href={"/book/" + params.id + "/" + chapter}>
-                {chapter.split(".")[0]}
-              </a>
-            </li>
-          ))}
+        {chapters.map((chapter) => (
+          <li key={chapter}>
+            <Link href={`/book/${params.id}/${chapter}`}>
+              {chapter.split(".")[0]}
+            </Link>
+          </li>
+        ))}
       </ul>
     </>
   );
