@@ -6,14 +6,9 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
-  },
-  plugins: [],
+  plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require("@tailwindcss/typography"),
+  ],
 };
 export default config;
