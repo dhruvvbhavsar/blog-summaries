@@ -29,7 +29,7 @@ export default async function ChaptersPage({ params }: { params: { id: string } 
   }
 
   return (
-    <>
+    <div className="container mx-auto p-4">
       <h1>{params.id}</h1>
       <ul>
         {chapters.map((chapter) => (
@@ -40,6 +40,6 @@ export default async function ChaptersPage({ params }: { params: { id: string } 
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }
